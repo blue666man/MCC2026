@@ -17,7 +17,7 @@ public ShooterIOTalonFX(int motorID) {
 
   @Override
     public void updateInputs(shooterIOInputs inputs) {
-        inputs.ShooterSpeed = shooterMotor.get();
+        inputs.shooterSpeed = shooterMotor.get();
     }
 
     @Override

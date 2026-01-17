@@ -22,7 +22,7 @@ public class ShooterSubsystem extends SubsystemBase {
     private WantedState wantedState = WantedState.IDLE;
     private SystemState systemState = SystemState.IDLED;
 
-     private double shooterspeedsetpoint = 0.0;
+     private double shooterSpeedSetpoint = 0.0;
 
      public ShooterSubsystem(ShooterIO io) {
         this.io = io;
@@ -45,7 +45,7 @@ public class ShooterSubsystem extends SubsystemBase {
                 io.setShooterSpeed(0.1);
                 break;
             case REVERSING:
-                io.setShooterSpeed(-shooterspeedsetpoint);
+                io.setShooterSpeed(-shooterSpeedSetpoint);
                 break;
             case IDLED:
             default:
@@ -67,11 +67,11 @@ public class ShooterSubsystem extends SubsystemBase {
     }
     
     public void feed(double shooterSpeed) {
-        this.shooterspeedsetpoint = shooterSpeed;
+        this.shooterSpeedSetpoint = shooterSpeed;
         setWantedState(WantedState.FEEDING);
     }
      public void reverse(double shooterSpeed) {
-        this.shooterspeedsetpoint = shooterSpeed;
+        this.shooterSpeedSetpoint = shooterSpeed;
         setWantedState(WantedState.REVERSE);
     }
       public void stop() {

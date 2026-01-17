@@ -11,13 +11,13 @@ public HopperIOTalonFX(int beltID) {
 }
 
    @Override
-    public void setBeltspeed(double speed) {
+    public void setBeltSpeed(double speed) {
 
     }
 
   @Override
     public void updateInputs(HopperIOInputs inputs) {
-        inputs.beltspeed = beltMotor.get();
+        inputs.beltSpeed = beltMotor.get();
     }
 
     @Override
