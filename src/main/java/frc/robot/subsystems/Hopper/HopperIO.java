@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.Hopper;
 
 public interface HopperIO {
     default void setBeltSpeed (double speed) {}
