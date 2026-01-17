@@ -1,4 +1,21 @@
 {
+  "java.import.gradle.enabled": true,
+  "java.test.report.showInlineError": true,
+  "java.test.config": [
+    {
+      "name": "Default",
+      "workingDirectory": "${workspaceFolder}"
+    },
+    {
+      "name": "WPIlibUnitTests",
+      "workingDirectory": "${workspaceFolder}/build/jni/release",
+      "vmargs": ["-Djava.library.path=${workspaceFolder}/build/jni/release"],
+      "env": {
+        "LD_LIBRARY_PATH": "${workspaceFolder}/build/jni/release",
+        "DYLD_LIBRARY_PATH": "${workspaceFolder}/build/jni/release"
+      }
+    }
+  ],
   "java.configuration.updateBuildConfiguration": "automatic",
   "java.server.launchMode": "Standard",
   "files.exclude": {
@@ -14,17 +31,6 @@
     "**/.factorypath": true,
     "**/*~": true
   },
-  "java.test.config": [
-    {
-      "name": "WPIlibUnitTests",
-      "workingDirectory": "${workspaceFolder}/build/jni/release",
-      "vmargs": [ "-Djava.library.path=${workspaceFolder}/build/jni/release" ],
-      "env": {
-        "LD_LIBRARY_PATH": "${workspaceFolder}/build/jni/release" ,
-        "DYLD_LIBRARY_PATH": "${workspaceFolder}/build/jni/release"
-      }
-    },
-  ],
   "java.test.defaultConfig": "WPIlibUnitTests",
   "java.import.gradle.annotationProcessing.enabled": false,
   "java.completion.favoriteStaticMembers": [
@@ -55,7 +61,7 @@
     "javax.smartcardio.*",
     "edu.wpi.first.math.proto.*",
     "edu.wpi.first.math.**.proto.*",
-    "edu.wpi.first.math.**.struct.*",
+    "edu.wpi.first.math.**.struct.*"
   ],
   "java.dependency.enableDependencyCheckup": false
 }
