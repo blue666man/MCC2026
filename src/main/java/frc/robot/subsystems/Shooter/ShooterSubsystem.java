@@ -10,19 +10,20 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public enum WantedState {
         IDLE,
-        FEEDING,
+        SHOOTING,
         REVERSE
     }
 
     private enum SystemState {
         IDLED,
-        FEEDING,
+        SHOOTING,
         REVERSING
     }
     private WantedState wantedState = WantedState.IDLE;
     private SystemState systemState = SystemState.IDLED;
 
-     private double shooterSpeedSetpoint = 0.0;
+     private double feederSpeedsetPoint = 0.0;
+     private double shooterSpeedPoint = 0.0;
 
      public ShooterSubsystem(ShooterIO io) {
         this.io = io;
@@ -41,14 +42,17 @@ public class ShooterSubsystem extends SubsystemBase {
 
 
     switch (systemState) {
-            case FEEDING:
+            case SHOOTING:
+                io.setFeederSpeed(0.1);
                 io.setShooterSpeed(0.1);
                 break;
             case REVERSING:
-                io.setShooterSpeed(-shooterSpeedSetpoint);
+                io.setFeederSpeed(-feederSpeedsetPoint);
+                io.setFeederSpeed(-shooterSpeedPoint);
                 break;
             case IDLED:
             default:
+                io.setFeederSpeed(0.0);
                 io.setShooterSpeed(0.0);
                 break;
         }
@@ -56,8 +60,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
       private SystemState handleStateTransition() {
         switch (wantedState) {
-            case FEEDING:
-                return SystemState.FEEDING;
+            case SHOOTING:
+                return SystemState.SHOOTING;
             case REVERSE:
                 return SystemState.REVERSING;
             case IDLE:
@@ -66,12 +70,15 @@ public class ShooterSubsystem extends SubsystemBase {
         }
     }
     
-    public void feed(double shooterSpeed) {
-        this.shooterSpeedSetpoint = shooterSpeed;
-        setWantedState(WantedState.FEEDING);
+    public void feed(double feederSpeed, double shooterSpeed) {
+        this.feederSpeedsetPoint = feederSpeed;
+        this.shooterSpeedPoint = shooterSpeed;
+        setWantedState(WantedState.SHOOTING);
     }
-     public void reverse(double shooterSpeed) {
-        this.shooterSpeedSetpoint = shooterSpeed;
+     public void reverse(double feederSpeed, double shooterSpeed) {
+        this.feederSpeedsetPoint = feederSpeed;
+        this.shooterSpeedPoint = shooterSpeed;
+
         setWantedState(WantedState.REVERSE);
     }
       public void stop() {
@@ -97,6 +104,20 @@ public class ShooterSubsystem extends SubsystemBase {
         return new InstantCommand(() -> setWantedState(state));
 
     }
+
+   public Command setSpeedCommand(double shooterSpeed) {
+    return new InstantCommand(() -> {
+        this.shooterSpeedPoint = shooterSpeed;
+
+        if (shooterSpeed > 0) {
+            setWantedState(WantedState.SHOOTING);
+        } else if (shooterSpeed < 0) {
+            setWantedState(WantedState.REVERSE);
+        } else {
+            setWantedState(WantedState.IDLE);
+        }
+    });
+}
 }
     
 
